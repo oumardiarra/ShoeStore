@@ -24,9 +24,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
         val toolbar = binding.toolbar
         setSupportActionBar(toolbar)
-        /*val navController = findNavController(R.id.nav_host_fragment)
+        val navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration)*/
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration)
 
 
     }
