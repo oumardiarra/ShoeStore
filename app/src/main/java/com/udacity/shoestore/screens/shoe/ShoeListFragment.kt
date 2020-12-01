@@ -1,27 +1,30 @@
 package com.udacity.shoestore.screens.shoe
 
 import android.os.Bundle
-import android.view.ContextThemeWrapper
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.marginTop
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.udacity.shoestore.R
 import com.udacity.shoestore.databinding.ShoeListFragmentBinding
 import com.udacity.shoestore.models.Shoe
+import kotlinx.android.synthetic.main.shoe_item_layout.view.*
+import timber.log.Timber
 
 
 class ShoeListFragment : Fragment() {
 
     private lateinit var _binding: ShoeListFragmentBinding
     private val binding get() = _binding!!
-    private lateinit var viewModel: ShoeListViewModel
+
+    private val viewModel by activityViewModels<ShoeListViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,14 +32,14 @@ class ShoeListFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = ShoeListFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
-        viewModel = ViewModelProvider(this).get(ShoeListViewModel::class.java)
-        _binding.shoeListViewModel = viewModel
-        viewModel.shoeList.observe(this, Observer { newShoe ->
-            displayItem(newShoe)
+        setHasOptionsMenu(true)
+        viewModel.shoeList.observe(viewLifecycleOwner, Observer { newShoe ->
+            Timber.d("observer call")
+            displayItem(viewModel.shoeList.value!!)
         })
-        val args = ShoeListFragmentArgs.fromBundle(arguments!!)
-        viewModel.addShoeItem(args?.newShoe!!)
-        displayItem(viewModel.shoeList.value!!)
+
+
+
         binding.floatingAcAdd.setOnClickListener { view ->
             findNavController().navigate(ShoeListFragmentDirections.actionShoeListFragmentToShoeDetailFragment())
         }
@@ -44,30 +47,27 @@ class ShoeListFragment : Fragment() {
     }
 
     private fun displayItem(shoeList: MutableList<Shoe>) {
-        binding.shoeListLinearLayout.removeAllViews()
+        // binding.shoeListLinearLayout.removeAllViews()
         shoeList?.forEach { shoe ->
+            val viewInflate = layoutInflater.inflate(R.layout.shoe_item_layout, null)
+            viewInflate.shoe_name_text.text = shoe.name
+            viewInflate.shoe_company_text.text = shoe.company
+            viewInflate.shoe_size_text.text = shoe.size.toString()
 
-            val textViewTitle = TextView(context)
-            val shoeSizeText = TextView(context)
-            val shoeCompanyText = TextView(context)
-            //val dividerView = View(dividerContext)
-            textViewTitle.text = shoe.name
-            shoeSizeText.text = shoe.size.toString()
-            shoeCompanyText.text = shoe.company
+            binding.shoeListLinearLayout.addView(viewInflate)
 
-            val params = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-
-            /* params.setMargins(0, 10, 0, 10)
-             textViewTitle.layoutParams = params*/
-            binding.shoeListLinearLayout.addView(textViewTitle)
-            binding.shoeListLinearLayout.addView(shoeSizeText)
-            binding.shoeListLinearLayout.addView(shoeCompanyText)
 
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
+        inflater.inflate(R.menu.menu,menu)
+        //super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return NavigationUI.onNavDestinationSelected(item, requireView().findNavController())
+                || super.onOptionsItemSelected(item)
+    }
 }
