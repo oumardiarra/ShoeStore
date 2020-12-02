@@ -3,7 +3,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
+<!-- ConstraintLayout as Root layout because of the FloatingActionButton at the bottom-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/shoe_list_layout"
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="64dp"
             app:layout_constraintTop_toTopOf="parent">
-
+            <!-- We want view to be align one after the other, With LinearLayout we benefit of the layout orientation -->
             <LinearLayout
                 android:id="@+id/shoe_list_linear_layout"
                 android:layout_width="match_parent"
@@ -32,7 +32,6 @@
             android:id="@+id/floating_ac_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
             android:clickable="true"
             android:src="@drawable/ic_add"

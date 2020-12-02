@@ -3,10 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-    </data>
-
+    <!-- This is a simple layout, but since I want my button at bottom of the screen ,
+        ConstrainstLayout allow me to do that easily by addind only constraint to bottom of parent -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/welcome_layout"
         android:layout_width="match_parent"

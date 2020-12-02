@@ -9,7 +9,8 @@
             name="shoe"
             type="com.udacity.shoestore.screens.shoe.ShoeListViewModel" />
     </data>
-
+    <!-- We want to constraint each view to others and for some views to the parent, ConstraintLayout is the best deal for that, also ,
+     it will adjust view size depending on screen -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
